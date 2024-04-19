@@ -2,7 +2,7 @@ export function setCookie(res, name, value, options = {}) {
   // Default cookie options
   const defaultOptions = {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
     secure: process.env.NODE_ENV === "production",
   };
 

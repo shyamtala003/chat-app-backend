@@ -1,5 +1,6 @@
 import { check } from "express-validator";
 
+// validator for registration
 export const userValidator = [
   check("name")
     .isLength({ min: 1, max: 30 })
@@ -36,4 +37,23 @@ export const userValidator = [
     .withMessage("gender must be required")
     .isIn(["male", "female"])
     .withMessage("Gender must be either male or female"),
+];
+
+// validator for login
+export const userLoginValidator = [
+  check("username")
+    .custom((value, { req }) => {
+      if (/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(value)) {
+        throw new Error(
+          "Username must not contain special characters and spaces"
+        );
+      }
+      return true;
+    })
+    .isLength({ min: 6, max: 24 })
+    .withMessage("Username must be a string between 6 and 24 characters"),
+
+  check("password")
+    .isLength({ min: 8, max: 30 })
+    .withMessage("Password length should be between 8 and 30 characters"),
 ];
