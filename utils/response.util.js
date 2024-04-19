@@ -5,10 +5,14 @@ export default function setResponse(
   message = "",
   data = {}
 ) {
-  return res.status(statusCode).json({
-    code: statusCode,
-    success: flag,
-    message,
-    data,
-  });
+  try {
+    return res.status(statusCode).json({
+      code: statusCode,
+      success: flag,
+      message,
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
