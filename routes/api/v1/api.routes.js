@@ -7,6 +7,7 @@ import {
 } from "../../../validators/message.validator.js";
 import validator from "../../../validators/validator.js";
 import getMessage from "../../../controllers/api/v1/getMessage.controller.js";
+import getAllUser from "../../../controllers/api/v1/getAllUser.controller.js";
 
 const router = express.Router();
 
@@ -26,4 +27,5 @@ router.get(
   getMessage
 );
 
+router.get("/users", protectedRoute, getAllUser);
 export default router;
