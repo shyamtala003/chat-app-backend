@@ -1,15 +1,17 @@
 import { userModel } from "../models/user.model.js";
 import generateToken from "../utils/generateToken.util.js";
 import setResponse from "../utils/response.util.js";
+import { setCookie } from "../utils/setCookie.util.js";
 import verifyToken from "../utils/verifyToken.util.js";
 
 export default async function protectedRoute(req, res, next) {
   try {
-    let accessToken = req.cookies.access_token;
-    let refreshToken = req.cookies.refresh_token;
+    console.log(req.cookies);
+    let accessToken = req.cookies["access token"];
+    let refreshToken = req.cookies["refresh token"];
 
     // 1. if refresh token is not provided then throw exception
-    if (refreshToken)
+    if (!refreshToken)
       return setResponse(
         res,
         401,
