@@ -6,7 +6,6 @@ import verifyToken from "../utils/verifyToken.util.js";
 
 export default async function protectedRoute(req, res, next) {
   try {
-    console.log(req.cookies);
     let accessToken = req.cookies["access token"];
     let refreshToken = req.cookies["refresh token"];
 
@@ -32,7 +31,7 @@ export default async function protectedRoute(req, res, next) {
         return setResponse(res, 404, false, "Unauthorized - User not found");
 
       req.user = userData;
-      next();
+      return next();
     }
 
     // 3. if refresh token is provided then validate token and send the new access token in cookie and set user data
@@ -55,7 +54,7 @@ export default async function protectedRoute(req, res, next) {
       // 5. Set new access token in cookie
       setCookie(res, "access token", accessToken, { maxAge: 15 * 60 * 1000 });
 
-      next();
+      return next();
     }
   } catch (error) {
     console.log(error);
