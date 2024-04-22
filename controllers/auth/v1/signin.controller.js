@@ -9,7 +9,9 @@ export const signin = async (req, res) => {
     const { username, password } = req.body;
 
     // 1. check user existence
-    const isUserExist = await userModel.findOne({ username: username });
+    const isUserExist = await userModel
+      .findOne({ username: username })
+      .select("+password");
     if (!isUserExist) {
       return setResponse(res, 404, false, "Username not found.");
     }
@@ -40,7 +42,7 @@ export const signin = async (req, res) => {
       500,
       false,
       "An error occurred while processing your request",
-      { error }
+      { error: error.message }
     );
   }
 };

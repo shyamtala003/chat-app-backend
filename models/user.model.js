@@ -11,6 +11,7 @@ const userSchema = Schema(
     password: {
       type: String,
       required: [true, "password is required."],
+      select: false,
     },
     gender: {
       type: String,
