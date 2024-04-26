@@ -31,6 +31,7 @@ export const signin = async (req, res) => {
     setCookie(res, "access token", accessToken, { maxAge: 15 * 60 * 1000 });
 
     return setResponse(res, 200, true, "User logged in successfully", {
+      _id: isUserExist?._id,
       name: isUserExist?.name,
       username: isUserExist?.username,
       gender: isUserExist?.gender,

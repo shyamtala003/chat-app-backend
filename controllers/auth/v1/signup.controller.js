@@ -36,6 +36,7 @@ export const signup = async (req, res) => {
     setCookie(res, "access token", accessToken, { maxAge: 15 * 60 * 1000 });
 
     return setResponse(res, 201, true, "User created successfully", {
+      _id: savedUser?._id,
       name: savedUser?.name,
       username: savedUser?.username,
       gender: savedUser?.gender,
