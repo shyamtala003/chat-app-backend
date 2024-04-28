@@ -1,7 +1,8 @@
-import app from "./app.js";
 import connectToDatabase from "./db/connect.js";
+import { server } from "./sockets/socketConfig.js";
 
-app.listen(process.env.PORT, () => {
-  console.log(`server in running on PORT : ${process.env.PORT}`);
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
   connectToDatabase();
 });
