@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",
+      "http://localhost:5173",
       "https://organic-memory-g4x9qrvp77wxhv6x5-5173.app.github.dev",
     ],
     credentials: true,
