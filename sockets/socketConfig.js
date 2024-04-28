@@ -16,13 +16,33 @@ const io = new Server(server, {
   },
 });
 
-// Socket.io connection handling
-io.on("connection", (socket) => {
-  console.log("A user connected");
+let onlineUser = {};
 
-  // Handle disconnection
+io.on("connection", (socket) => {
+  console.log("A user connected" + socket.id);
+
+  const userId = socket.handshake.auth.userId;
+  const socketId = socket.id;
+
+  if (socket.handshake.auth.userId) {
+    onlineUser[userId] = socketId;
+    io.emit("onlineUsers", Object.keys(onlineUser));
+  }
+  socket.on("typing", ({ senderId, receiverId }) => {
+    // Broadcast "typing" event to the receiver
+    io.to(onlineUser[receiverId]).emit("typing", { senderId });
+  });
+
+  socket.on("stopTyping", ({ senderId, receiverId }) => {
+    // Broadcast "stopTyping" event to the receiver
+    io.to(onlineUser[receiverId]).emit("stopTyping", { senderId });
+  });
+
   socket.on("disconnect", () => {
-    console.log("User disconnected");
+    delete onlineUser[userId];
+    io.emit("onlineUsers", Object.keys(onlineUser));
+
+    console.log("User disconnected" + socket.id);
   });
 });
 
