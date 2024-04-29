@@ -1,5 +1,6 @@
 import { conversationModel } from "../../../models/conversation.model.js";
 import { messageModel } from "../../../models/message.model.js";
+import { io } from "../../../sockets/socketConfig.js";
 import setResponse from "../../../utils/response.util.js";
 
 export default async function sendMessage(req, res) {
@@ -33,6 +34,10 @@ export default async function sendMessage(req, res) {
 
     // 6. save the conversation and the message
     await Promise.allSettled([newMessage.save(), conversation.save()]);
+
+    // 7. notify msg receiver through socket if user is online
+    onlineUser[receiverId] &&
+      io.to(onlineUser[receiverId]).emit("newMessage", newMessage);
 
     return setResponse(res, 201, true, "message sended successfully", {
       message: newMessage,

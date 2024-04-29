@@ -17,7 +17,7 @@ const io = new Server(server, {
   },
 });
 
-let onlineUser = {};
+global.onlineUser = {};
 
 io.on("connection", (socket) => {
   console.log("A user connected" + socket.id);
@@ -31,12 +31,14 @@ io.on("connection", (socket) => {
   }
   socket.on("typing", ({ senderId, receiverId }) => {
     // Broadcast "typing" event to the receiver
-    io.to(onlineUser[receiverId]).emit("typing", { senderId });
+    onlineUser[receiverId] &&
+      io.to(onlineUser[receiverId]).emit("typing", { senderId });
   });
 
   socket.on("stopTyping", ({ senderId, receiverId }) => {
     // Broadcast "stopTyping" event to the receiver
-    io.to(onlineUser[receiverId]).emit("stopTyping", { senderId });
+    onlineUser[receiverId] &&
+      io.to(onlineUser[receiverId]).emit("stopTyping", { senderId });
   });
 
   socket.on("disconnect", () => {
