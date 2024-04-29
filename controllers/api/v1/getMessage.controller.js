@@ -8,11 +8,10 @@ export default async function getMessage(req, res) {
     const senderId = req?.user?._id;
 
     // 2. find the conversation between the receiver and the sender
-    const conversation = await conversationModel
-      .findOne({
-        participants: { $all: [toChatUserId, senderId] },
-      })
-      .populate("messages");
+    const conversation = await conversationModel.getConversation(
+      senderId,
+      toChatUserId
+    );
 
     return setResponse(res, 200, true, "messages fetched successfully", {
       messages: conversation ? conversation.messages : [],

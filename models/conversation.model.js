@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import getConversation from "../methods/conversation/getConversation.js";
 
 const conversationSchema = Schema(
   {
@@ -16,7 +17,10 @@ const conversationSchema = Schema(
       },
     ],
   },
-  { timestamp: true }
+  { timestamps: true }
 );
+
+// 1. method for get converasation
+conversationSchema.statics.getConversation = getConversation;
 
 export const conversationModel = model("Conversation", conversationSchema);
