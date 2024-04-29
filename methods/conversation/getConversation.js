@@ -29,6 +29,21 @@ export default async function getConversation(senderId, receiverId) {
         },
       },
       {
+        $unwind: "$messages",
+      },
+      {
+        $sort: {
+          "messages.createdAt": 1,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          participants: { $first: "$participants" },
+          messages: { $push: "$messages" },
+        },
+      },
+      {
         $project: {
           __v: 0,
         },
