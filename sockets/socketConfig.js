@@ -11,6 +11,7 @@ const io = new Server(server, {
     origin: [
       "http://localhost:5173",
       "https://organic-memory-g4x9qrvp77wxhv6x5-5173.app.github.dev",
+      process.env.WEB_URL,
     ],
     credentials: true,
   },
