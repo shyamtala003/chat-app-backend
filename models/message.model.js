@@ -16,6 +16,10 @@ const messageSchema = Schema(
       type: String,
       required: [true, "message is required."],
     },
+    read: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
