@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import http from "http";
 import app from "../app.js";
+import { messageModel } from "../models/message.model.js";
 
 // Create HTTP server using Express app
 const server = http.createServer(app);
@@ -39,6 +40,19 @@ io.on("connection", (socket) => {
     // Broadcast "stopTyping" event to the receiver
     onlineUser[receiverId] &&
       io.to(onlineUser[receiverId]).emit("stopTyping", { senderId });
+  });
+
+  socket.on("allMessageReaded", async ({ msgReaderId, senderId }) => {
+    //  Broadcast "live read msg" status to msg sender
+    await messageModel.updateMany(
+      { senderId: senderId, receiverId: msgReaderId, read: false },
+      { $set: { read: true } }
+    );
+
+    onlineUser[senderId] &&
+      io
+        .to(onlineUser[senderId])
+        .emit("allMessageReaded", { toChatUserId: msgReaderId });
   });
 
   socket.on("disconnect", () => {
