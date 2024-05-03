@@ -27,7 +27,9 @@ export const signin = async (req, res) => {
     const accessToken = generateToken({ id: isUserExist._id });
 
     // 4. Set cookies
-    setCookie(res, "refresh token", refreshToken);
+    setCookie(res, "refresh token", refreshToken, {
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+    });
     setCookie(res, "access token", accessToken, { maxAge: 15 * 60 * 1000 });
 
     return setResponse(res, 200, true, "User logged in successfully", {

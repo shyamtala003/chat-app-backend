@@ -32,7 +32,9 @@ export const signup = async (req, res) => {
     const accessToken = generateToken({ id: savedUser._id });
 
     // 6. Set cookies
-    setCookie(res, "refresh token", refreshToken);
+    setCookie(res, "refresh token", refreshToken, {
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+    });
     setCookie(res, "access token", accessToken, { maxAge: 15 * 60 * 1000 });
 
     return setResponse(res, 201, true, "Account created successfully", {
