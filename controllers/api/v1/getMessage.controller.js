@@ -1,6 +1,7 @@
 import { conversationModel } from "../../../models/conversation.model.js";
 import setResponse from "../../../utils/response.util.js";
 import { messageModel } from "../../../models/message.model.js";
+import { io } from "../../../sockets/socketConfig.js";
 
 export default async function getMessage(req, res) {
   try {
@@ -9,10 +10,18 @@ export default async function getMessage(req, res) {
     const senderId = req?.user?._id;
 
     // 2. Update the read status of messages
-    await messageModel.updateMany(
+    let updateResult = await messageModel.updateMany(
       { senderId: toChatUserId, receiverId: senderId, read: false },
       { $set: { read: true } }
     );
+
+    // 3. notify to toChatUser for your all messages are readed
+    if (updateResult?.modifiedCount > 0) {
+      onlineUser[toChatUserId] &&
+        io
+          .to(onlineUser[toChatUserId])
+          .emit("allMessageReaded", { toChatUserId: senderId });
+    }
 
     // 3. Find the conversation between the receiver and the sender
     const conversation = await conversationModel.getConversation(
