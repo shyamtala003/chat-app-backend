@@ -3,7 +3,7 @@ name: CICD
 on:
   push:
     branches:
-      - elastic-beanstalk-ec2
+      - production
 
 jobs:
   build-and-deploy:
