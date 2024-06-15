@@ -1,5 +1,3 @@
-name: CICD
-
 on:
   push:
     branches:
@@ -11,29 +9,14 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
+          node-version: 20
       - name: Install Dependencies
         run: npm install
-
-      - name: Run Tests
-        run: npm test  # Add this step if you have tests
-
       - name: Generate Deployment Package
         run: zip -r nodejs-app-build.zip .
-
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
