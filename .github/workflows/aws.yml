@@ -9,20 +9,29 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      
       - name: Install Dependencies
         run: npm install
+        
       - name: Generate Deployment Package
         run: zip -r nodejs-app-build.zip .
+
+      - name: Setup Node.js 20 for Beanstalk Deploy
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: 'chat-app-production'
+          application_name: 'Chat-app-production'
           environment_name: 'Chat-app-production-env'
           version_label: ${{ github.sha }}
           region: us-east-1
