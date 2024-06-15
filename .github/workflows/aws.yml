@@ -31,11 +31,6 @@ jobs:
       - name: Generate Deployment Package
         run: zip -r nodejs-app-build.zip .
 
-      - name: Setup Node.js 20 for Beanstalk Deploy
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -45,3 +40,5 @@ jobs:
           environment_name: 'Chat-app-production-env'
           version_label: ${{ github.sha }}
           region: ap-south-1
+          deployment_package: nodejs-app-build.zip
+          use_existing_version_if_available: true 
