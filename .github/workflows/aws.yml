@@ -34,5 +34,5 @@ jobs:
           application_name: 'chat-app-production'
           environment_name: 'Chat-app-production-env'
           version_label: ${{ github.sha }}
-          region: us-east-1
+          region: ap-south-1
           deployment_package: nodejs-app-build.zip
