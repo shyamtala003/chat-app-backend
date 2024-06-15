@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Generate Deployment Package
-        run: zip -r nodejs-app-build.zip .
+        run: zip -r nodejs-app-build.zip
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
